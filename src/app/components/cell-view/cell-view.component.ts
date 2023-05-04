@@ -14,7 +14,7 @@ export class CellViewComponent {
   _cellID:string = ""
   _autoLoad:boolean = false
   cell$ = this.storage.getCell(this._cellID)
-  files:Array<Observable<File>>|null = null
+  files:Array<Observable<File>>= new Array
   addFileById:string = ""
   constructor(private route:ActivatedRoute, private http:HttpClient, private storage:StorageService){}
 
