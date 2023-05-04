@@ -7,6 +7,8 @@ export class DndDirective {
 
   @Output('appDnd')
   fileDrop = new EventEmitter<any>()
+  @Output('existingFile')
+  fileMove = new EventEmitter<any>()
   @HostBinding('class.drop-zone-active')
   active = false;
   @HostBinding('class.drop-zone-file-size')
@@ -46,7 +48,11 @@ export class DndDirective {
     this.active = false
     const { dataTransfer } = event;
     if(!dataTransfer) return
-    if (dataTransfer.items) {
+    if(dataTransfer.getData('fileID'))
+    {
+      let q = {fileID: dataTransfer.getData("fileID"), originCell:dataTransfer.getData("originCell")}
+      this.fileMove.emit(q);
+    } else if (dataTransfer.items) {
       const files = [];
       for (let i = 0; i < dataTransfer.items.length; i++) {
         if (dataTransfer.items[i].kind === 'file') {  

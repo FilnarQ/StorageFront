@@ -9,6 +9,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class FileItemComponent {
   @Input()
+  currentCell:string = ""
+  @Input()
   file:File = {id:"", name:"", type:"", size:0, path:""}
   @Input()
   autoLoad:boolean = false
@@ -23,6 +25,8 @@ export class FileItemComponent {
   {
     if(!event.dataTransfer||!event.target) return
       event.dataTransfer.setData('DownloadURL', `${this.file.type}:${this.file.name}:${this.url}`);
+      event.dataTransfer.setData('fileID', this.file.id);
+      event.dataTransfer.setData('originCell', this.currentCell)
   }
   delete()
   {

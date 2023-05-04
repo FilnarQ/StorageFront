@@ -7,19 +7,19 @@
             <mat-icon>upload</mat-icon>
         </button>
     </mat-card-header>
-    <mat-card-content (appDnd)="upload($event)">
+    <mat-card-content (appDnd)="upload($event)" (existingFile)="addById($event.fileID, $event.originCell)">
         <div *ngIf="files; else loading">
-            <div class="list">
+            <!-- <div class="list">
                 <div *ngFor="let file of files;index as i;trackBy:trackByFunc" class="list-item">
                     <div *ngIf="file|async as file" class="list-item-wrapper">
                         <app-file-item *ngIf="file.type.split('/').at(0)=='image'" [file]="file" (delete)="delete($event)" [autoLoad]="_autoLoad"></app-file-item>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div  class="list">
                 <div *ngFor="let file of files;index as i;trackBy:trackByFunc" class="list-item">
                     <div *ngIf="file|async as file" class="list-item-wrapper">
-                        <app-file-item [file]="file" (delete)="delete($event)" [autoLoad]="_autoLoad"></app-file-item>
+                        <app-file-item [currentCell]="this._cellID" [file]="file" (delete)="delete($event)" [autoLoad]="_autoLoad"></app-file-item>
                     </div>
                 </div>
                 <div *ngIf="files.length==0" class="empty">
