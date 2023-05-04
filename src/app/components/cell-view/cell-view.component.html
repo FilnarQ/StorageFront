@@ -1,0 +1,41 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>
+            <h1>#{{_cellID}}</h1>
+        </mat-card-title>
+        <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
+            <mat-icon>upload</mat-icon>
+        </button>
+    </mat-card-header>
+    <mat-card-content (appDnd)="upload($event)">
+        <div *ngIf="files; else loading">
+            <div class="list">
+                <div *ngFor="let file of files;index as i;trackBy:trackByFunc" class="list-item">
+                    <div *ngIf="file|async as file" class="list-item-wrapper">
+                        <app-file-item *ngIf="file.type.split('/').at(0)=='image'" [file]="file" (delete)="delete($event)" [autoLoad]="_autoLoad"></app-file-item>
+                    </div>
+                </div>
+            </div>
+            <div  class="list">
+                <div *ngFor="let file of files;index as i;trackBy:trackByFunc" class="list-item">
+                    <div *ngIf="file|async as file" class="list-item-wrapper">
+                        <app-file-item [file]="file" (delete)="delete($event)" [autoLoad]="_autoLoad"></app-file-item>
+                    </div>
+                </div>
+                <div *ngIf="files.length==0" class="empty">
+                    Cell is empty!
+                </div>
+            </div>
+        </div>
+        <ng-template #loading>
+            Loading...
+        </ng-template>
+    </mat-card-content>
+    <mat-card-footer>
+        <input type="file" class="file-input"
+        (change)="upload($event)" #fileUpload>
+    </mat-card-footer>
+</mat-card>
+<mat-card class="go-back">
+        <button matCardTitle routerLink="login"><- Go back</button>
+</mat-card>

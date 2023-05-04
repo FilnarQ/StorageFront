@@ -1,0 +1,37 @@
+span{
+    width: 100%;
+}
+.draggable{
+    background-color: #ffdc5f;
+}
+.not-draggable{
+    background-color: #eeeeee; 
+}
+mat-card-content{
+    display: flex;
+    flex-flow: row nowrap;
+    .left{
+        flex: 0 20%;
+        mat-icon{
+            margin: auto;
+            width: auto;
+        }
+        img{
+            margin: auto;
+            max-width: 80%;
+        }
+    }
+
+    .right{
+        flex: 0 80%;
+        p{
+            word-break: break-all;
+            display: block;
+        }
+    }
+}
+mat-card-actions{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}

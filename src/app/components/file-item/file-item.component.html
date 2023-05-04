@@ -1,0 +1,29 @@
+<mat-card [draggable]="dragActive" (dragstart)="dragDownload($event)">
+    <mat-card-content [ngClass]="dragActive?'draggable':'not-draggable'">
+        <div class="left">
+            <img *ngIf="file.type.split('/').at(0)=='image'; else icon" [src]="sanitizer.bypassSecurityTrustResourceUrl(url)">
+            <ng-template #icon>
+                <mat-icon>attachment</mat-icon>
+            </ng-template>
+        </div>
+        <div class="right">
+            <p matLabel>{{file.name}}</p>
+            <!-- <span>Type: {{file.type}}</span><br> -->
+            <p>Size: {{file.size/1024/1024>1?(file.size/1024/1024).toFixed(2)+"Mb":(file.size/1024).toFixed(2)+"Kb"}}</p>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <a href="https://localhost:7091/files/download?path={{file.path}}&name={{file.name}}">
+            <button mat-mini-fab>
+                <mat-icon>
+                    download
+                </mat-icon>
+            </button>
+        </a>
+        <button mat-mini-fab (click)="delete()" color="warn">
+            <mat-icon>
+                delete
+            </mat-icon>
+        </button>
+    </mat-card-actions>
+</mat-card>
