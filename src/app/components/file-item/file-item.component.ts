@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { File } from 'src/app/models/File';
 import { DomSanitizer } from '@angular/platform-browser';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-file-item',
@@ -19,7 +20,7 @@ export class FileItemComponent {
   url:string = "";
   dragActive:boolean = false;
 
-  constructor(public sanitizer:DomSanitizer){}
+  constructor(public sanitizer:DomSanitizer, public storage:StorageService){}
 
   dragDownload(event: DragEvent)
   {
@@ -38,7 +39,7 @@ export class FileItemComponent {
   }
   loadBlob()
   {
-    fetch(`https://localhost:7091/files/download?path=${this.file.path}&name=${this.file.name}`).then(res=>res.blob()).then(blob=>{
+    this.storage.getBlob(this.file.path, this.file.name).then(blob=>{
       this.url = URL.createObjectURL(blob)
       console.log(this.url)
       this.dragActive = true;

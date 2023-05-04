@@ -13,7 +13,7 @@
         </div>
     </mat-card-content>
     <mat-card-actions>
-        <a href="https://localhost:7091/files/download?path={{file.path}}&name={{file.name}}">
+        <a [href]="this.storage.getDownloadLink(this.file.path, this.file.name)">
             <button mat-mini-fab>
                 <mat-icon>
                     download
