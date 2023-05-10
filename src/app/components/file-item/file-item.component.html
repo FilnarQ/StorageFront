@@ -8,8 +8,10 @@
         </div>
         <div class="right">
             <p matLabel>{{file.name}}</p>
-            <!-- <span>Type: {{file.type}}</span><br> -->
-            <p>Size: {{file.size/1024/1024>1?(file.size/1024/1024).toFixed(2)+"Mb":(file.size/1024).toFixed(2)+"Kb"}}</p>
+            <p class="details">
+                Size: {{file.size/1024/1024>1?(file.size/1024/1024).toFixed(2)+"Mb":(file.size/1024).toFixed(2)+"Kb"}}
+                <span *ngIf="remainingTime<60*60*1000" class="time-warning"><mat-icon inline="true">schedule</mat-icon>{{(remainingTime/(1000*60))-1|number:'1.0-0'}}m</span>
+            </p>
         </div>
     </mat-card-content>
     <mat-card-actions>

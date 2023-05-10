@@ -14,7 +14,9 @@ export class CellViewComponent {
   _cellID:string = ""
   _autoLoad:boolean = false
   cell$ = this.storage.getCell(this._cellID)
-  files:Array<Observable<File>>= new Array
+  files:Array<Observable<File>> = new Array
+  images:Array<string> = new Array
+  other:Array<string> = new Array
   addFileById:string = ""
   constructor(private route:ActivatedRoute, private http:HttpClient, private storage:StorageService){}
 
@@ -49,6 +51,18 @@ export class CellViewComponent {
   load()
   {
     this.cell$.subscribe(res=>{
+      for(let fileID of res.files)
+      {
+        this.storage.getFile(fileID).subscribe(file=>{
+          if(file.type.split('/').at(0)=='image')
+          {
+            this.images.push(fileID)
+          }
+          else{
+            this.other.push(fileID)
+          }
+        })
+      }
       let tempFiles = res.files.map(fileID=>this.storage.getFile(fileID))
       this.files = tempFiles;
     })

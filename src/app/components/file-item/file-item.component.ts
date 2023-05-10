@@ -19,6 +19,7 @@ export class FileItemComponent {
   deleteEmitter:EventEmitter<string> = new EventEmitter<string>()
   url:string = "";
   dragActive:boolean = false;
+  remainingTime:number = 7*24*60*60*1000;
 
   constructor(public sanitizer:DomSanitizer, public storage:StorageService){}
 
@@ -36,6 +37,7 @@ export class FileItemComponent {
 
   ngOnInit(){
     if(this.autoLoad&&this.file.size<1024*1024*25||this.file.type.split('/')[0]=='image') this.loadBlob();
+    this.remainingTime = 5*60*1000-(Date.now()-Number.parseInt(this.file.id))
   }
   loadBlob()
   {

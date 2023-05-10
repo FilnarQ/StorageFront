@@ -28,10 +28,27 @@ mat-card-content{
             word-break: break-all;
             display: block;
         }
+        .details{
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-between;
+        }
     }
 }
 mat-card-actions{
     display: flex;
     flex-flow: row wrap;
     justify-content: space-evenly;
+}
+
+.time-warning{
+    flex: 35%;
+    display: block;
+    text-align: right;
+    word-wrap: none;
+    color: red;
+    display: inline;
+    mat-icon{
+        display: inline;
+    }
 }
