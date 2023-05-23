@@ -8,7 +8,7 @@ import { File } from 'src/app/models/File';
   providedIn: 'root'
 })
 export class StorageService {
-  server:string = "http://194.44.187.59:8090/api"
+  server:string = "/api"
 
   constructor(private http:HttpClient) { }
 
