@@ -5,6 +5,8 @@ import { Directive, EventEmitter, HostBinding, HostListener, Output } from '@ang
 })
 export class DndDirective {
 
+  @Output('dataPaste')
+  dataPaste = new EventEmitter<any>()
   @Output('appDnd')
   fileDrop = new EventEmitter<any>()
   @Output('existingFile')
@@ -32,6 +34,40 @@ export class DndDirective {
     else
     {
       this.active = true;
+    }
+  }
+
+  
+
+  @HostListener('paste', ['$event'])
+  onPaste(event: ClipboardEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (event.clipboardData?.items) {
+      const files = [];
+      const data:Array<{type:string, data:string}> = [];
+      for (let i = event.clipboardData.items.length-1; i>=0; i--) {
+        if (event.clipboardData.items[i].kind === 'file') {  
+          files.push(event.clipboardData.items[i].getAsFile());
+        }
+        else if(event.clipboardData.items[i].kind === 'string'){
+          let type = event.clipboardData.items[i].type;
+          console.log(event.clipboardData.items[i])
+          event.clipboardData.items[i].getAsString((s:string)=>{
+            console.log(s)
+            data.push({type:type??"null", data:s});
+            if(i==0)
+            {
+              let w = {items:data}
+              this.dataPaste.emit(w);
+            }
+          });
+        }
+      }
+      console.log("await check " + data)
+      event.clipboardData.items.clear();
+      let q = {target:{files:files}}
+      this.fileDrop.emit(q);
     }
   }
 

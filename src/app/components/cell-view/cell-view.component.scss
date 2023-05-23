@@ -5,6 +5,20 @@ mat-card{
     }
     mat-card-content{
         padding-bottom: 5%;
+        .input-wrapper{
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: center;
+            input{
+                flex: 1 1 100%;
+                border: none;
+                text-align: center;
+            }
+            input:focus-visible{
+                outline: 1px solid #dbc9fa;
+                background-color:#dbc9fa;
+            }
+        }
     }
 }
 

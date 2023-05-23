@@ -19,7 +19,7 @@
             <div  class="list">
                 <div *ngFor="let file of files;index as i;trackBy:trackByFunc" class="list-item">
                     <div *ngIf="file|async as file" class="list-item-wrapper">
-                        <app-file-item [currentCell]="this._cellID" [file]="file" (delete)="delete($event)" [autoLoad]="_autoLoad"></app-file-item>
+                        <app-file-item [currentCell]="this._cellID" [file]="file" (delete)="delete($event)" [autoLoad]="_autoLoad" [clipboardSelected]="selectedClipboard==i" (clipboardSelected)="selectedClipboard=i"></app-file-item>
                     </div>
                 </div>
                 <div *ngIf="files.length==0" class="empty">
@@ -30,6 +30,9 @@
         <ng-template #loading>
             Loading...
         </ng-template>
+        <div class="input-wrapper">
+            <input appDnd (appDnd)="upload($event)" (dataPaste)="uploadData($event.items)" readonly value="Paste your data here">
+        </div>
     </mat-card-content>
     <mat-card-footer>
         <input type="file" class="file-input"

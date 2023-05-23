@@ -1,21 +1,20 @@
-<mat-card [draggable]="dragActive" (dragstart)="dragDownload($event)">
-    <mat-card-content [ngClass]="dragActive?'draggable':'not-draggable'">
-        <div class="left">
-            <img *ngIf="file.type.split('/').at(0)=='image'; else icon" [src]="sanitizer.bypassSecurityTrustResourceUrl(url)">
-            <ng-template #icon>
-                <mat-icon>attachment</mat-icon>
-            </ng-template>
+<mat-card [draggable]="dragActive" (dragstart)="dragDownload($event)" (copy)="onCopy($event)">
+    <mat-card-content [ngClass]="getClass()">
+        <div class="left" [ngSwitch]="file.type.split('/').at(0)">
+            <img *ngSwitchCase="'image'" [src]="sanitizer.bypassSecurityTrustResourceUrl(url)">
+            <mat-icon *ngSwitchCase="'clipboardData'" (mousedown)="makeSelection($event)">content_paste</mat-icon>
+            <mat-icon *ngSwitchDefault >attachment</mat-icon>
         </div>
         <div class="right">
-            <p matLabel>{{file.name.length>25?(file.name|slice:0:10)+"..."+(file.name|slice:-10):file.name}}</p>
+            <p matLabel>{{file.type=='clipboardData'?this.clipboardData[0].type:(file.name.length>25?(file.name|slice:0:10)+"..."+(file.name|slice:-10):file.name)}}</p>
             <p class="details">
-                Size: {{file.size/1024/1024>1?(file.size/1024/1024).toFixed(2)+"Mb":(file.size/1024).toFixed(2)+"Kb"}}
-                <span *ngIf="remainingTime<60*60*1000" class="time-warning"><mat-icon inline="true">schedule</mat-icon>{{(remainingTime/(1000*60))|number:'1.0-0'}}m</span>
+                {{file.type=='clipboardData'?"Types: "+file.size:"Size: "+(file.size/1024/1024>1?(file.size/1024/1024).toFixed(2)+"Mb":(file.size/1024).toFixed(2)+"Kb")}}
+                <span *ngIf="remainingTime<60*60*1000" class="time-warning"><mat-icon inline="true">schedule</mat-icon>{{((remainingTime<0?0:remainingTime)/(1000*60))|number:'1.0-0'}}m</span>
             </p>
         </div>
     </mat-card-content>
     <mat-card-actions>
-        <a [href]="this.storage.getDownloadLink(this.file.path, this.file.name)">
+        <a [href]="this.storage.getDownloadLink(this.file.path, file.type=='clipboardData'?this.clipboardData[0].type+'.txt':this.file.name)">
             <button mat-mini-fab>
                 <mat-icon>
                     download

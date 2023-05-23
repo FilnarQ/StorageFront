@@ -15,11 +15,26 @@ export class CellViewComponent {
   _autoLoad:boolean = false
   cell$ = this.storage.getCell(this._cellID)
   files:Array<Observable<File>> = new Array
-  images:Array<string> = new Array
-  other:Array<string> = new Array
-  addFileById:string = ""
+  // images:Array<string> = new Array
+  // other:Array<string> = new Array
+  // addFileById:string = ""
+  selectedClipboard:number = -1
   constructor(private route:ActivatedRoute, private http:HttpClient, private storage:StorageService){}
 
+  uploadData(data:Array<{type:string, data:string}>)
+  {
+    let stringData = JSON.stringify(data)
+    let file = new File([stringData], data[data.length-1].type);
+    this.storage.uploadFile(file).subscribe(res=>{
+      if(file==null) return
+      this.storage.registerFile({name:stringData, type:"clipboardData", size:data.length}, res.path).subscribe(res=>{
+        this.storage.addFile(res.id, this._cellID).subscribe(async (res)=>{
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          this.ngOnInit()
+        })
+      })
+    })
+  }
   upload(event:Event)
   {
     let target = event.target as HTMLInputElement;
@@ -51,18 +66,18 @@ export class CellViewComponent {
   load()
   {
     this.cell$.subscribe(res=>{
-      for(let fileID of res.files)
-      {
-        this.storage.getFile(fileID).subscribe(file=>{
-          if(file.type.split('/').at(0)=='image')
-          {
-            this.images.push(fileID)
-          }
-          else{
-            this.other.push(fileID)
-          }
-        })
-      }
+      // for(let fileID of res.files)
+      // {
+      //   this.storage.getFile(fileID).subscribe(file=>{
+      //     if(file.type.split('/').at(0)=='image')
+      //     {
+      //       this.images.push(fileID)
+      //     }
+      //     else{
+      //       this.other.push(fileID)
+      //     }
+      //   })
+      // }
       let tempFiles = res.files.map(fileID=>this.storage.getFile(fileID))
       this.files = tempFiles;
     })

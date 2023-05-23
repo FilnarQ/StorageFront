@@ -8,7 +8,7 @@ import { File } from 'src/app/models/File';
   providedIn: 'root'
 })
 export class StorageService {
-  server:string = "https://localhost:7091"
+  server:string = "http://194.44.187.59:8090/api"
 
   constructor(private http:HttpClient) { }
 
@@ -23,7 +23,7 @@ export class StorageService {
     formData.append("file", file);
     return this.http.post<{path:string}>(`${this.server}/files/upload`, formData);
   }
-  registerFile(file:globalThis.File, filePath:string)
+  registerFile(file:{name:string, type:string, size:number}, filePath:string)
   {
     return this.http.post<File>(`${this.server}/files`, {name:file.name, type:file.type, size:file.size.toString(), path:filePath.split('/')[0].normalize()})
   }
