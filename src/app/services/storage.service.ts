@@ -14,7 +14,7 @@ export class StorageService {
 
   getCell(cellID:string)
   {
-    return this.http.get<Cell>(`${this.server}/cells/${cellID}`)
+    return this.http.get<Cell>(`${this.server}/cells/${encodeURI(cellID)}`)
   }
 
   uploadFile(file:globalThis.File)
@@ -29,21 +29,21 @@ export class StorageService {
   }
   addFile(fileID:string, cellID:string)
   {
-    return this.http.post(`${this.server}/cells/${cellID}/add?fileID=${fileID}`,{})
+    return this.http.post(`${this.server}/cells/${encodeURI(cellID)}/add?fileID=${encodeURI(fileID)}`,{})
   }
 
   getFile(fileID:string)
   {
-    return this.http.get<File>(`${this.server}/files/${fileID}`)
+    return this.http.get<File>(`${this.server}/files/${encodeURI(fileID)}`)
   }
   deleteFile(cellID:string,fileID:string)
   {
-    return this.http.post(`${this.server}/cells/${cellID}/del?fileID=${fileID}`,{})
+    return this.http.post(`${this.server}/cells/${encodeURI(cellID)}/del?fileID=${encodeURI(fileID)}`,{})
   }
 
   getDownloadLink(path:string, name:string)
   {
-    return `${this.server}/files/download?path=${path}&name=${name}`
+    return `${this.server}/files/download?path=${encodeURI(path)}&name=${encodeURI(name)}`
   }
   async getBlob(path:string, name:string)
   {

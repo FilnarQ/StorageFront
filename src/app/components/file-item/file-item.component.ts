@@ -70,18 +70,21 @@ export class FileItemComponent {
   }
 
   ngOnInit(){
-    if((this.autoLoad&&this.file.size<1024*1024*25||this.file.type.split('/')[0]=='image')&&this.file.type!='clipboardData') this.loadBlob();
+    // if((this.autoLoad&&this.file.size<1024*1024*25||this.file.type.split('/')[0]=='image')&&this.file.type!='clipboardData') this.loadBlob();
+    this.loadBlob()
     if(this.file.type=='clipboardData') this.clipboardData = JSON.parse(this.file.name)
     console.log(this.clipboardData)
     this.remainingTime = 5*60*1000-(Date.now()-Number.parseInt(this.file.id))
   }
   loadBlob()
   {
-    this.storage.getBlob(this.file.path, this.file.name).then(blob=>{
-      this.url = URL.createObjectURL(blob)
-      console.log(this.url)
-      this.dragActive = true;
-    })
+    // this.storage.getBlob(this.file.path, this.file.name).then(blob=>{
+    //   this.url = URL.createObjectURL(blob)
+    //   console.log(this.url)
+    //   this.dragActive = true;
+    // })
+    this.url = this.storage.getDownloadLink(this.file.path, this.file.name)
+    this.dragActive = true
   }
   getClass()
   {

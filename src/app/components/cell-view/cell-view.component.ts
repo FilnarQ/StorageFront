@@ -86,7 +86,8 @@ export class CellViewComponent {
   {
     this.route.queryParams.subscribe(params=>{
       this._cellID = params['id'];
-      this._autoLoad = params['load']=="true";
+      // this._autoLoad = params['load']=="true";
+      this._autoLoad = true
       this.cell$ = this.storage.getCell(this._cellID);
       this.load()
     })
